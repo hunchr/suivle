@@ -1,0 +1,9 @@
+.git
+.gitignore
+.prettierrc
+tsconfig.json
+bun.lockb
+
+node_modules
+.vscode
+src

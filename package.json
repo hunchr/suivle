@@ -1,0 +1,30 @@
+{
+    "name": "suivle",
+    "description": "todo",
+    "version": "0.0.1",
+    "main": "./src/index.js",
+    "license": "MIT",
+    "homepage": "https://github.com/hunchr/suivle#readme",
+    "author": {
+        "name": "hunchr",
+        "url": "https://github.com/hunchr"
+    },
+    "keywords": [
+        "suivle",
+        "bun"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hunchr/suivle.git"
+    },
+    "bugs": {
+        "url": "https://github.com/hunchr/suivle/issues"
+    },
+    "scripts": {
+        "dev": "bun run --hot src/index.ts"
+    },
+    "devDependencies": {
+        "bun-types": "^0.5.7",
+        "typescript": "latest"
+    }
+}
