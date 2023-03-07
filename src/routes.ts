@@ -1,7 +1,14 @@
-import { Routes, Route } from "./interfaces";
+import { Routes, Route, StrObj } from "./interfaces";
 import { readdirSync, statSync } from "fs";
 
-const getFiles = (dirs: string[], files: string[] = []) => {
+const CRUD: StrObj = {
+    POST: "c",
+    GET: "r",
+    PUT: "u",
+    DELETE: "d"
+},
+
+getFiles = (dirs: string[], files: string[] = []) => {
     dirs.forEach(dir => {
         readdirSync(dir).forEach(file => {
             statSync(file = dir + "/" + file).isDirectory() ?
@@ -17,7 +24,7 @@ getRoutes = (dirs: string[]) => {
     const routes: Routes = {};
 
     getFiles(dirs).forEach(file => {
-        let url: string = file.replace(/^\.\/src\/[a-z]+|(\.[crud])?\.[a-z]+$/g, "") // Remove file extension
+        let url = file.replace(/^\.\/src\/[a-z]+|(\.[crud])?\.[a-z]+$/g, "") // Remove file extension
         const params = file.match(/(?<=\[).*?(?=\])/g), // Match params
               method = file.match(/(?<=\.)[crud](?=\.)/)?.[0],
               route: Route = { path: url };
@@ -41,4 +48,7 @@ getRoutes = (dirs: string[]) => {
     return routes;
 };
 
-export { getRoutes };
+export {
+    CRUD,
+    getRoutes
+};

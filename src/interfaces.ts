@@ -3,7 +3,9 @@ interface ServerConfig {
     port?: number;
     server?: string;
     params?: RegExp;
-    routes?: string[];
+    functions?: {
+        [key: string]: Function;
+    };
 };
 
 interface Routes {
@@ -16,5 +18,21 @@ interface Route {
     methods?: string;
 };
 
-export { ServerConfig, Routes, Route };
+interface Handler {
+    path: string,
+    params: StrObj,
+    json: Function,
+    render: Function
+};
 
+interface StrObj {
+    [key: string]: string;
+};
+
+export {
+    ServerConfig,
+    Routes,
+    Route,
+    Handler,
+    StrObj
+};
