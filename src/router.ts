@@ -1,12 +1,20 @@
-import { Routes, Route, StrObj } from './interface'
 import { readdirSync, statSync } from 'fs'
 
-const CRUD: StrObj = {
-    POST: 'c',
-    GET: 'r',
-    PUT: 'u',
-    DELETE: 'd'
-},
+interface Routes {
+    [key: string]: Route
+}
+
+interface Route {
+    handler?: Function
+    params?: string[]
+    static?: boolean
+}
+
+const routes: Routes = {},
+      methodRe = /(?<=\.)(get|post|put|delete)(?=\.)/,
+      routeRe = new RegExp(
+        `^.*?(models|views|public)|\\.?(${methodRe.toString().slice(1, -1)})?\\.[a-z]+$`, 'g'
+      ),
 
 getFiles = (dirs: string[], files: string[] = []) => {
     dirs.forEach(dir => {
@@ -18,37 +26,31 @@ getFiles = (dirs: string[], files: string[] = []) => {
     })
     
     return files
-},
+}
 
-getRoutes = (dirs: string[]) => {
-    const routes: Routes = {}
+getFiles(['models', 'views', 'public'].map(dir => './src/' + dir)).forEach(file => {
+    const route: Route = {}
 
-    getFiles(dirs).forEach(file => {
-        let url = file.replace(/^\.\/src\/[a-z]+|(\.[crud])?\.[a-z]+$/g, '') // Remove file extension
-        const params = file.match(/(?<=\[).*?(?=\])/g), // Match params
-              method = file.match(/(?<=\.)[crud](?=\.)/)?.[0],
-              route: Route = { path: url }
-
-        url = url.replace(/\[.*?\]/g, '*') // Remove params
+    // Public
+    if (file[6] === 'p') {
+        route.static = true
+        file = file.replace(/^.*?public/, '')
+    }
+    else {
+        const params = file.match(/(?<=\[).*?(?=\])/g)
+        route.handler = require(`../../.${file}`).handle
+        file = (file[6] === 'm' ? file.match(methodRe)?.[0].toUpperCase() + '/api' : '') +
+            file.replace(routeRe, '').replace(/\[.*?\]/g, '#') // Replace params
 
         if (params) {
             route.params = params
         }
-        if (method) {
-            if (routes[url = '/api' + url]) {
-                return routes[url].methods += method
-            }
+    }
 
-            route.methods = method
-        }
-
-        routes[url] = route
-    })
-
-    return routes
-}
+    routes[file] = route
+})
 
 export {
-    CRUD,
-    getRoutes
+    Routes,
+    routes
 }
