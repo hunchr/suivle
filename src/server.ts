@@ -10,7 +10,7 @@ const server = (app: Suivle) => {
             handler.path = req.url.replace(/(.*?\/){3}|\?.*/g, ''),
             handler._api = handler.path.slice(0, 4) === 'api/',
             handler._route = app.routes[
-                `${handler._api ? req.method : ''}/${handler.path.replace(/\[.*?\]/g, '#')}`
+                `${handler._api ? req.method : ''}/${handler.path.replace(handler.params, '#')}`
             ]
 
             return new Response(

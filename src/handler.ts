@@ -3,9 +3,6 @@ interface Handler {
 }
 
 const handler: Handler = {
-    path: '',
-    _api: false,
-    _route: {},
     json: (res: number | object): [string, object] | object => {
         let status = 200
 
@@ -36,6 +33,20 @@ const handler: Handler = {
             },
             status: status
         }]
+    },
+    getParam: (name: string) => {
+        const params: { [key: string]: string } = {}
+
+        if (!handler._parsedParams) {
+            handler.path.match(handler.params)?.forEach((param: string, i: number) => {
+                params[handler._route.params[i]] = param
+            })
+
+            handler.params = params
+            handler._parsedParams = true
+        }
+
+        return handler.params[name]
     }
 }
 
