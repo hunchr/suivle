@@ -1,8 +1,8 @@
 {
     "name": "suivle",
-    "description": "todo",
-    "version": "0.0.1",
-    "main": "./src/index.js",
+    "description": "Bun web framework",
+    "version": "0.0.0-alpha.1",
+    "main": "./src/index.ts",
     "license": "MIT",
     "homepage": "https://github.com/hunchr/suivle#readme",
     "author": {
@@ -24,7 +24,7 @@
         "dev": "bun run --hot src/index.ts"
     },
     "devDependencies": {
-        "bun-types": "^0.5.7",
+        "bun-types": "latest",
         "typescript": "latest"
     }
 }

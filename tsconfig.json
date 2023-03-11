@@ -6,6 +6,11 @@
         "moduleResolution": "node",
         "types": ["bun-types"],
         "rootDir": "src",
-        "strict": true
+        "outDir": "dist",
+        "declarationDir": "dist",
+        "declaration": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "removeComments": true
     }
 }
