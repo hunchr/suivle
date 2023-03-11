@@ -1,9 +1,9 @@
-.git
 .gitignore
 .prettierrc
 tsconfig.json
 bun.lockb
 
+.git
 node_modules
 .vscode
 src

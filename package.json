@@ -2,7 +2,8 @@
     "name": "suivle",
     "description": "Bun web framework",
     "version": "0.0.0-alpha.1",
-    "main": "./src/index.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "license": "MIT",
     "homepage": "https://github.com/hunchr/suivle#readme",
     "author": {
@@ -11,7 +12,8 @@
     },
     "keywords": [
         "suivle",
-        "bun"
+        "bun",
+        "http"
     ],
     "repository": {
         "type": "git",
@@ -21,10 +23,12 @@
         "url": "https://github.com/hunchr/suivle/issues"
     },
     "scripts": {
-        "dev": "bun run --hot src/index.ts"
+        "dev": "bun run --hot src/index.ts",
+        "build": "rimraf dist && tsc --project tsconfig.json"
     },
     "devDependencies": {
         "bun-types": "latest",
-        "typescript": "latest"
+        "typescript": "latest",
+        "rimraf": "latest"
     }
 }

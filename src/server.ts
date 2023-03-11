@@ -1,5 +1,4 @@
-import { file } from 'bun'
-import { Suivle } from 'suivle'
+import { Suivle } from './index'
 import { handler } from './handler'
 
 const server = (app: Suivle) => {
@@ -7,8 +6,8 @@ const server = (app: Suivle) => {
         port: app.port,
         hostname: app.host,
         fetch: (req: Request) => {
-            handler.path = req.url.replace(/(.*?\/){3}|\?.*/g, ''),
-            handler._api = handler.path.slice(0, 4) === 'api/',
+            handler.path = req.url.replace(/(.*?\/){3}|\?.*/g, '')
+            handler._api = handler.path.slice(0, 4) === 'api/'
             handler._route = app.routes[
                 `${handler._api ? req.method : ''}/${handler.path.replace(handler.params, '#')}`
             ]
@@ -16,7 +15,7 @@ const server = (app: Suivle) => {
             return new Response(
                 ...handler._route ? (
                     handler._route.static ?
-                        [file('./src/public/' + handler.path)] :
+                        [Bun.file('./src/public/' + handler.path)] :
                         handler._route.handler(handler)
                 ) :
                 handler._api ?

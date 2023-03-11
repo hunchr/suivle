@@ -13,7 +13,7 @@ interface Route {
 const routes: Routes = {},
       methodRe = /(?<=\.)(get|post|put|delete)(?=\.)/,
       routeRe = new RegExp(
-        `^.*?(models|views|public)|\\.?(${methodRe.toString().slice(1, -1)})?\\.[a-z]+$`, 'g'
+        `^.*?(models|views|public)|((?<=\/)index)?\\.?(${methodRe.toString().slice(1, -1)})?\\.[a-z]+$`, 'g'
       ),
 
 getFiles = (dirs: string[], files: string[] = []) => {

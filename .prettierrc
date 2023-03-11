@@ -2,8 +2,8 @@
 	"tabWidth": 4,
 	"useTabs": false,
 	"semi": false,
-	"singleQuote": false,
-	"arrowParens": "avoid",
+	"singleQuote": true,
+	"arrowParens": "always",
 	"quoteProps": "as-needed",
 	"trailingComma": "none"
 }
