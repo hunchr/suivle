@@ -1,13 +1,13 @@
 import { server } from './server'
 import { Routes, routes } from './router'
-import { Handler, handler } from './handler'
+import { Handler, StrObj, handler } from './handler'
 
 interface ServerConfig {
     port?: number
     host?: string
     params?: RegExp
-    headers?: { [key: string]: string }
-    globals?: Handler
+    headers?: StrObj,
+    globals?: { [key: string]: any }
 }
 
 class Suivle {
@@ -34,4 +34,4 @@ class Suivle {
     }
 }
 
-export { Suivle }
+export { Suivle, Handler }

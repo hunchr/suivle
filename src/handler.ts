@@ -1,12 +1,28 @@
 interface Handler {
+    path: string,
+    params: RegExp,
+    headers: StrObj
+    tmp: { [key: string]: any }
+    getHeader(name: string): string,
+    getParam(name: string): string,
+    getSearchParam(name: string): string,
+    getCookie(name: string): string,
     [key: string]: any
 }
 
+interface StrObj {
+    [key: string]: string
+}
+
 const handler: Handler = {
-    getHeader: (name: string) => (
+    path: '',
+    params: /./,
+    headers: {},
+    tmp: {},
+    getHeader: (name) => (
         handler.tmp.req.headers.get(name)
     ),
-    getParam: (name: string) => {
+    getParam: (name) => {
         if (!handler.tmp.params) {
             handler.tmp.params = {}
 
@@ -17,7 +33,7 @@ const handler: Handler = {
 
         return handler.tmp.params[name]
     },
-    getSearchParam: (name: string) => {
+    getSearchParam: (name) => {
         if (!handler.tmp.searchParams) {
             handler.tmp.searchParams = {}
 
@@ -28,7 +44,7 @@ const handler: Handler = {
 
         return handler.tmp.searchParams[name]
     },
-    getCookie: (name: string) => {
+    getCookie: (name) => {
         if (!handler.tmp.cookies) {
             handler.tmp.cookies = {}
 
@@ -44,5 +60,6 @@ const handler: Handler = {
 
 export {
     Handler,
+    StrObj,
     handler
 }

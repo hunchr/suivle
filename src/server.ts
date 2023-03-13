@@ -6,7 +6,7 @@ const server = (app: Suivle) => {
         port: app.port,
         hostname: app.host,
         fetch: async (req: Request) => {
-            handler.path = '/' + req.url.replace(/(.*?\/){3}|\?.*/g, '')
+            handler.path = '/' + req.url.replace(/^(.*?\/){3}|\?.*$/g, '')
             handler.tmp = {
                 req: req,
                 api: handler.path.slice(0, 5) === '/api/'
@@ -20,9 +20,7 @@ const server = (app: Suivle) => {
                 return new Response(Bun.file('./src/public' + handler.path))
             }
 
-            let res = await handler.tmp.route?.handler(handler) ?? (
-                handler.tmp.api ? 404 : [404]
-            )
+            let res = await handler.tmp.route?.handler(handler) ?? 404
 
             // Models (JSON)
             if (handler.tmp.api) {
@@ -37,9 +35,9 @@ const server = (app: Suivle) => {
             }
             // Views (HTML)
             else {
-                const [status, response] = typeof res === 'object' ?
-                    [res[0], await require('../../../src/modules/error').handle(res)] :
-                    [200, res]
+                const [status, response] = typeof res === 'string' ?
+                    [200, res] :
+                    [res[0] ?? res, await (app.routes['##error##'] as { handler : Function }).handler(handler, res)]
 
                 return new Response(response, {
                     headers: handler.headers,

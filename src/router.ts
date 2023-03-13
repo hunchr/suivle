@@ -50,6 +50,9 @@ getFiles(['models', 'views', 'public'].map((dir) => './src/' + dir)).forEach((fi
     routes[file] = route
 })
 
+routes['##error##'] = routes['/error']
+delete routes['/error']
+
 export {
     Routes,
     routes
