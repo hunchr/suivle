@@ -3,34 +3,6 @@ interface Handler {
 }
 
 const handler: Handler = {
-    json: (res: number | object): [string, object] | object => {
-        let status = 200
-
-        if (typeof res === 'number') {
-            status = res
-            res = { status: res }
-        }
-
-        return handler.tmp.api ?
-            [JSON.stringify(res), {
-                headers: { 'Content-Type': 'application/json' },
-                status: status
-            }] :
-            res
-    },
-    html: (res: number | string, errMsg?: string): object => {
-        let status = 200
-    
-        if (typeof res === 'number') {
-            status = res as number
-            res = require('../../../src/modules/error').handle(errMsg)
-        }
-    
-        return [res as string, {
-            headers: handler.headers,
-            status: status
-        }]
-    },
     getHeader: (name: string) => (
         handler.tmp.req.headers.get(name)
     ),

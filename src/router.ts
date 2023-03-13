@@ -11,7 +11,7 @@ interface Route {
 }
 
 const routes: Routes = {},
-      methodRe = /(?<=\.)(get|post|put|delete)(?=\.)/,
+      methodRe = /(?<=\.)(get|post|put|patch|delete)(?=\.)/,
       routeRe = new RegExp(
         `^.*?(models|views|public)|((?<=\/)index)?\\.?(${methodRe.toString().slice(1, -1)})?\\.[a-z]+$`, 'g'
       ),
