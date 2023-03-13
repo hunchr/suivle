@@ -11,7 +11,7 @@ const handler: Handler = {
             res = { status: res }
         }
 
-        return handler._api ?
+        return handler.tmp.api ?
             [JSON.stringify(res), {
                 headers: { 'Content-Type': 'application/json' },
                 status: status
@@ -21,32 +21,52 @@ const handler: Handler = {
     html: (res: number | string, errMsg?: string): object => {
         let status = 200
     
-        if (errMsg) {
+        if (typeof res === 'number') {
             status = res as number
-            res = `ERROR_${errMsg}` // TODO: Include error file
+            res = require('../../../src/modules/error').handle(errMsg)
         }
     
         return [res as string, {
-            headers: {
-                'Content-Type': 'text/html charset=utf-8', 
-                'Content-Security-Policy': "default-src 'self'; connect-src 'self'; img-src 'self'" // TODO: CSP
-            },
+            headers: handler.headers,
             status: status
         }]
     },
+    getHeader: (name: string) => (
+        handler.tmp.req.headers.get(name)
+    ),
     getParam: (name: string) => {
-        const params: { [key: string]: string } = {}
+        if (!handler.tmp.params) {
+            handler.tmp.params = {}
 
-        if (!handler._parsedParams) {
             handler.path.match(handler.params)?.forEach((param: string, i: number) => {
-                params[handler._route.params[i]] = param
+                handler.tmp.params[handler.tmp.route.params[i]] = param
             })
-
-            handler.params = params
-            handler._parsedParams = true
         }
 
-        return handler.params[name]
+        return handler.tmp.params[name]
+    },
+    getSearchParam: (name: string) => {
+        if (!handler.tmp.searchParams) {
+            handler.tmp.searchParams = {}
+
+            new URL(handler.tmp.req.url).searchParams?.forEach((value, name) => {
+                handler.tmp.searchParams[name] = value
+            })
+        }
+
+        return handler.tmp.searchParams[name]
+    },
+    getCookie: (name: string) => {
+        if (!handler.tmp.cookies) {
+            handler.tmp.cookies = {}
+
+            handler.getHeader("cookie")?.split('; ').forEach((cookie: string) => {
+                const i = cookie.indexOf('=')
+                handler.tmp.cookies[cookie.slice(0, i)] = cookie.slice(i + 1)
+            })
+        }
+    
+        return handler.tmp.cookies[name]
     }
 }
 

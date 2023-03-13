@@ -17,8 +17,8 @@ const routes: Routes = {},
       ),
 
 getFiles = (dirs: string[], files: string[] = []) => {
-    dirs.forEach(dir => {
-        readdirSync(dir).forEach(file => {
+    dirs.forEach((dir) => {
+        readdirSync(dir).forEach((file) => {
             statSync(file = dir + '/' + file).isDirectory() ?
                 files = getFiles([file], files) :
                 files.push(file)
@@ -28,7 +28,7 @@ getFiles = (dirs: string[], files: string[] = []) => {
     return files
 }
 
-getFiles(['models', 'views', 'public'].map(dir => './src/' + dir)).forEach(file => {
+getFiles(['models', 'views', 'public'].map((dir) => './src/' + dir)).forEach((file) => {
     const route: Route = {}
 
     // Public
