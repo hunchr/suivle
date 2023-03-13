@@ -7,3 +7,4 @@ bun.lockb
 node_modules
 .vscode
 src
+docs
